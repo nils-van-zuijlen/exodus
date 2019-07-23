@@ -261,6 +261,15 @@ def search(request):
                     return JsonResponse([], safe=False)
                 serializer = ApplicationSerializer(applications, many=True)
                 return JsonResponse({'results': serializer.data}, safe=False)
+            elif query.type == 'report':
+                try:
+                    reports = Report.objects.filter(
+                        Q(application__handle__icontains=query.query) | Q(application__name__icontains=query.query)).order_by('application__name', 'application__handle', '-creation_date').distinct('application__name', 'application__handle')[:limit]
+                        # Q(application__handle__icontains=query.query) | Q(application__name__icontains=query.query)).order_by('name', 'handle').distinct('name', 'handle')[:limit]
+                except Report.DoesNotExist:
+                    return JsonResponse([], safe=False)
+                serializer = ReportSerializer(reports, many=True)
+                return JsonResponse({'results': serializer.data}, safe=False)
             elif query.type == 'tracker':
                 try:
                     trackers = Tracker.objects.filter(

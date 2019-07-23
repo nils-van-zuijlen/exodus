@@ -14,7 +14,7 @@ class ReportInfosSerializer(serializers.Serializer):
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = Report
-        fields = ['creation_date', 'found_trackers', 'application']
+        fields = ['id', 'creation_date', 'found_trackers', 'application']
         depth = 1
 
 

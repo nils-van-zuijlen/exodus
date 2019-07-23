@@ -34,15 +34,16 @@
 {{#each results}}
     <tr class="">
         <td class="col-md-2">
-            <img src="/reports/{{id}}/icon" width="50px">
+            <img class="rounded" src="/reports/{{id}}/icon" width="50px">
         </td>
         <td class="col-md-10 text-truncate text-left">
-            <a href="/reports/search/{{handle}}">
-                {{#if name}}
-                    {{name}}
+            <a href="/reports/{{id}}">
+                {{#if application.name}}
+                    {{application.name}}
                 {{else}}
-                    {{handle}}
+                    {{application.handle}}
                 {{/if}}
+                {{found_trackers.length}}
             </a>
         </td>
     </tr>
@@ -58,6 +59,8 @@ jQuery(function() {
   jQuery("#query").focus();
 });
 const display_results = function(results) {
+    console.log(results);
+    // alert(results);
     jQuery("#results").hide()
     jQuery("#results-title").hide()
     jQuery("#results").html("")
@@ -81,7 +84,7 @@ const get_results = function(query, limit) {
     jQuery.ajax({
         type: 'POST',
         url: "/api/search",
-        data: '{"type": "application", "query":"'+query+'", "limit":'+limit+'}',
+        data: '{"type": "report", "query":"'+query+'", "limit":'+limit+'}',
         success: display_results,
         contentType: "application/json",
         dataType: 'json'
